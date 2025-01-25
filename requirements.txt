@@ -1,4 +1,8 @@
-pyside6
+pyqt5
 html2image
 pywin32
 openpyxl
+qasync
+ninja2
+pillow
+html2image
