@@ -1,0 +1,4 @@
+pyside6
+html2image
+pywin32
+openpyxl

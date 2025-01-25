@@ -1,0 +1,1 @@
+from .generate import print_cheque
