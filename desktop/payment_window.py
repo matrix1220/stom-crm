@@ -1,6 +1,6 @@
 
 from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWidget, QLineEdit, QComboBox
-from PyQt5.QtWidgets import QMainWindow, QDialog
+from PyQt5.QtWidgets import QMainWindow, QDialog, QCheckBox
 from PyQt5.QtCore import Qt
 
 from constants import names, percentage, files_location
@@ -40,7 +40,8 @@ class PaymentWindow(QDialog):
         self.layout.addWidget(self.label3)
         self.layout.addWidget(self.input3)
 
-        # add here new checkbox to print cheque or not
+        self.print_checkbox = QCheckBox("Print Cheque")  # Create the checkbox
+        self.layout.addWidget(self.print_checkbox)       # Add it to the layout
 
         self.button = QPushButton("To'lov")
         self.layout.addWidget(self.button)
@@ -55,7 +56,9 @@ class PaymentWindow(QDialog):
         date_today = datetime.now().strftime("%Y-%m-%d")  # Get today's date
 
         print(f"To'lov amalga oshmoqda: {doctor}, {patient_name}, {amount}")
-        #print_cheque(patient_name, amount, date_today, doctor) # Use today's date
+        print_cheque_now = self.print_checkbox.isChecked()  # Check if checkbox is checked
+        if print_cheque_now:
+            print_cheque(patient_name, amount, date_today, doctor) # Use today's date
         
 
         try:
