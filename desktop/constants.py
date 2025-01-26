@@ -10,3 +10,5 @@ names = percentage.keys()
 
 file_path = "Dekabr 2024.xlsx"
 sheet_name = "2024 Dekabr (30)"
+
+files_location = "files/"

@@ -2,7 +2,6 @@
 from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWidget, QLineEdit, QComboBox
 from PyQt5.QtWidgets import QMainWindow, QDialog
 from PyQt5.QtCore import Qt
-from qasync import QEventLoop
 
 from constants import names, percentage
 

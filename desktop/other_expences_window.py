@@ -3,7 +3,6 @@
 from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWidget, QLineEdit, QComboBox
 from PyQt5.QtWidgets import QMainWindow, QDialog
 from PyQt5.QtCore import Qt
-from qasync import QEventLoop
 
 from constants import names, percentage
 
@@ -14,7 +13,7 @@ import os.path
 
 
 
-class NewPaymentWindow(QDialog):  # New class for the new payment window
+class OtherExpensesWindow(QDialog):  # New class for the new payment window
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("New Expence") # Set a different title
@@ -86,8 +85,6 @@ class NewPaymentWindow(QDialog):  # New class for the new payment window
         description = self.input2.text()
         amount = self.input3.text()
 
-        # Process the payment (e.g., save to CSV, print receipt, etc.)
-        date_today = datetime.now().strftime("%Y-%m-%d")
         try:
             with open('other_expences.csv', 'a', newline='', encoding='utf-8') as csvfile:  # Use a different CSV file or same
                 writer = csv.writer(csvfile)
