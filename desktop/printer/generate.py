@@ -8,7 +8,7 @@ from PIL import Image, ImageWin
 
 from html2image import Html2Image
 
-hti = Html2Image(size=(200, 200))
+hti = Html2Image(size=(576, 2374))
 
 def print_cheque(payee, amount, date, doctor):
     # Load HTML template
@@ -30,7 +30,7 @@ def print_cheque(payee, amount, date, doctor):
     #os.startfile(output_path, "print")
     #os.startfile(output_path)
     img = Image.open(output_path)
-    printer_name = win32print.GetDefaultPrinter()
+    printer_name = "XP-80C" # win32print.GetDefaultPrinter()
     hDC = win32ui.CreateDC()
     hDC.CreatePrinterDC(printer_name)
 

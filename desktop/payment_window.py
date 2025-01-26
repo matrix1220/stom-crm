@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWid
 from PyQt5.QtWidgets import QMainWindow, QDialog
 from PyQt5.QtCore import Qt
 
-from constants import names, percentage
+from constants import names, percentage, files_location
 
 #from excel.com import save_new_record
 #save_new_record = None
@@ -40,6 +40,8 @@ class PaymentWindow(QDialog):
         self.layout.addWidget(self.label3)
         self.layout.addWidget(self.input3)
 
+        # add here new checkbox to print cheque or not
+
         self.button = QPushButton("To'lov")
         self.layout.addWidget(self.button)
         self.button.clicked.connect(self.process_inputs)
@@ -53,11 +55,11 @@ class PaymentWindow(QDialog):
         date_today = datetime.now().strftime("%Y-%m-%d")  # Get today's date
 
         print(f"To'lov amalga oshmoqda: {doctor}, {patient_name}, {amount}")
-        print_cheque(patient_name, amount, date_today, doctor) # Use today's date
+        #print_cheque(patient_name, amount, date_today, doctor) # Use today's date
         
 
         try:
-            with open('payments.csv', 'a', newline='', encoding='utf-8') as csvfile:  # 'a' mode appends
+            with open(files_location + 'payments.csv', 'a', newline='', encoding='utf-8') as csvfile:  # 'a' mode appends
                 writer = csv.writer(csvfile)
                 now = datetime.now()
                 date_time_string = now.strftime("%Y-%m-%d %H:%M:%S")
