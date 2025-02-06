@@ -7,7 +7,7 @@ from constants import names, percentage, files_location
 
 #from excel.com import save_new_record
 #save_new_record = None
-from printer import print_cheque
+from printer import print_cheque, print_double_cheque
 from datetime import datetime
 import csv
 import os.path
@@ -40,8 +40,9 @@ class PaymentWindow(QDialog):
         self.layout.addWidget(self.label3)
         self.layout.addWidget(self.input3)
 
-        self.print_checkbox = QCheckBox("Print Cheque")  # Create the checkbox
-        self.layout.addWidget(self.print_checkbox)       # Add it to the layout
+        self.print_combo = QComboBox()
+        self.print_combo.addItems(["Print Double Cheque", "Print Cheque", "Don't Print"])  # Add options
+        self.layout.addWidget(self.print_combo)
 
         self.button = QPushButton("To'lov")
         self.layout.addWidget(self.button)
@@ -56,10 +57,11 @@ class PaymentWindow(QDialog):
         date_today = datetime.now().strftime("%Y-%m-%d")  # Get today's date
 
         print(f"To'lov amalga oshmoqda: {doctor}, {patient_name}, {amount}")
-        print_cheque_now = self.print_checkbox.isChecked()  # Check if checkbox is checked
-        if print_cheque_now:
-            print_cheque(patient_name, amount, date_today, doctor) # Use today's date
-        
+        print_cheque_text = self.print_combo.currentText()
+        if print_cheque_text == "Print Double Cheque":
+            print_double_cheque(patient_name, amount, date_today, doctor)
+        elif print_cheque_text == "Print Cheque":
+            print_cheque(patient_name, amount, date_today, doctor)
 
         try:
             with open(files_location + 'payments.csv', 'a', newline='', encoding='utf-8') as csvfile:  # 'a' mode appends

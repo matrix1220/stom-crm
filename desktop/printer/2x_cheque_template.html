@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+    }
+    .cheque-table {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        font-size: 3rem;
+        height: 100%;
+    }
+    .cheque-cell {
+        border: 1px solid #000;
+        padding: 10px;
+        vertical-align: top; /* Align content to the top */
+    }
+
+
+</style>
+</head>
+<body>
+
+<table class="cheque-table">
+    <tr>
+        <td class="cheque-cell">
+            <div>Kimdan: {{ payee }}</div>
+            <div>Miqdor: {{ amount }} 000</div>
+            <div>Sana: {{ date }}</div>
+            <div>Doktor: {{ doctor }}</div>
+        </td>
+        <td class="cheque-cell">
+            <div>Kimdan: {{ payee }}</div>
+            <div>Miqdor: {{ amount }} 000</div>
+            <div>Sana: {{ date }}</div>
+            <div>Doktor: {{ doctor }}</div>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
