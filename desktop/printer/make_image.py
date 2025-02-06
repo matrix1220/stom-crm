@@ -25,8 +25,8 @@ def make_double_cheque_image(payee, amount, date, doctor):
         'quiet': '',
     }
 
-    paths = imgkit.from_string(rendered_html, output_path, options=options)
-    return paths[0]
+    imgkit.from_string(rendered_html, output_path, options=options)
+    return output_path
 
 def make_cheque_image(payee, amount, date, doctor):
     with open(os.path.join(script_dir, "template.html"), "r") as f:  # Use absolute template path
@@ -38,8 +38,8 @@ def make_cheque_image(payee, amount, date, doctor):
         'quiet': '',
     }
 
-    paths = imgkit.from_string(rendered_html, output_path, options=options)
-    return paths[0]
+    imgkit.from_string(rendered_html, output_path, options=options)
+    return output_path
 
 
 

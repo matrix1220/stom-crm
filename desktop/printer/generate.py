@@ -13,8 +13,9 @@ def _print_cheque(path, portrait = True):
     hDC = win32ui.CreateDC()
     hDC.CreatePrinterDC(printer_name)
 
-    # Set portrait orientation (corrected)
-    mode = win32con.MM_ANISOTROPIC if portrait else win32con.MM_ISOTROPIC
+    if portrait:
+        img = img.rotate(90, expand=True)
+    mode = win32con.MM_ANISOTROPIC if portrait else win32con.MM_ISOTROPIC # this is not affecting?
     hDC.SetMapMode(mode) # MM_ANISOTROPIC for portrait.
     hDC.SetViewportExt((img.width, img.height))  # Viewport matches image dimensions
     hDC.SetWindowExt((img.width, img.height))   # Window extents match image dimensions
