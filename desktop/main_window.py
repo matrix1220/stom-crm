@@ -154,8 +154,8 @@ class MainWindow(QMainWindow):
 
         result = self.payment_window.exec_()  # Use exec_() for PyQt5
 
-        if result == QDialog.Accepted: # Refresh only if the dialog was closed with 'Accepted' (or similar successful condition if you have one).
-            self.load_payment_data() # Reload after new payment registered
+        #if result == QDialog.Accepted: # Refresh only if the dialog was closed with 'Accepted' (or similar successful condition if you have one).
+        self.load_payment_data() # Reload after new payment registered
 
     def open_labor_share_window(self): # New function in MainWindow
         if self.labor_share_window is None:
