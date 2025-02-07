@@ -13,7 +13,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 # Set output path to the script's directory
 output_path = os.path.join(script_dir, "cheque.jpg") # Absolute path to cheque1.jpg
 
-def make_daily_report_image():
+def make_daily_report_image(full=False):
     """
         data (dict): A dictionary containing the report data.
             Should include:
@@ -57,7 +57,8 @@ def make_daily_report_image():
                     data["total_payments"] += amount
                     payments_by_doctor[doctor]["doctor"] = doctor
                     payments_by_doctor[doctor]["total"] += amount
-                    payments_by_doctor[doctor]["payments"].append({"payee": payee, "amount": amount})
+                    if full:
+                        payments_by_doctor[doctor]["payments"].append({"payee": payee, "amount": amount})
             except (ValueError, IndexError) as e:
                 print(f"Error reading payments.csv row: {row}. Error: {e}")
 
