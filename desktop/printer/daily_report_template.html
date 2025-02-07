@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            font-size: 3rem;
+        }
+        .report {
+            border: 1px solid #000;
+            padding: 10px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="report">
+        <div>Sana:{{ date }}</div>
+        <div>Umumiy topshirildi:{{ total_payments }}</div>
+        {% for payment in payments %}
+            <hr>
+            <div>Doktor: {{ payment.doctor }}</div>
+            <div>Umumiy:{{ payment.total }}</div>
+            {% if payment.payments %}
+                {% for payment in payment.payments %}
+                    <hr>
+                    <div>Kimdan: {{ payment.payee }}</div>
+                    <div>Miqdor:{{ payment.amount }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        <hr>
+        <div>Umumiy berildi:{{ total_labor_shares }}</div>
+        {% for labor_share in labor_shares %}
+        <hr>
+        <div>Doktor: {{ labor_share.doctor }}</div>
+        <div>Oldi: {{ labor_share.amount }}</div>
+        {% endfor %}
+        <hr>
+        <div>Umumiy qoldi:{{ totally_left }}</div>
+    </div>
+</body>
+</html>
