@@ -5,33 +5,36 @@ from jinja2 import Template
 import imgkit
 import csv
 from collections import defaultdict
-#import pdfkit
+import pdfkit
+
+from .print_image import _print_image
+from .make_image import make_image
 
 # Determine script's directory to construct absolute paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Set output path to the script's directory
-output_path = os.path.join(script_dir, "cheque.jpg") # Absolute path to cheque1.jpg
+output_path = os.path.join(script_dir, "cheque.jpg")
+
+output_pdf = os.path.join(script_dir, "report.pdf") # Absolute path to cheque1.jpg
+
 from constants import payments_file, labor_share_file, other_expences_file
 
-def make_daily_report_image(full=False):
-    """
-        data (dict): A dictionary containing the report data.
-            Should include:
-            - total_payments (int): Total payments received.
-            - payments (list): A list of payment dictionaries. Each payment dictionary should contain:
-                - doctor (str): Doctor's name.
-                - total (int): Total amount for the doctor.
-                - payments (list, optional): A list of individual payment details. Each detail should contain:
-                    - payee (str): Payer's name.
-                    - amount (int): Payment amount.
-            - total_labor_shares (int): Total labor shares paid.
-            - labor_shares (list): A list of labor share dictionaries. Each dictionary should contain:
-                - doctor (str): Doctor's name.
-                - amount (int): Labor share amount.
-            - totally_left (int): Total amount left.
-
-    """
+def get_daily_report_data(full=False):
+    # data (dict): A dictionary containing the report data.
+    # Should include:
+    # - total_payments (int): Total payments received.
+    # - payments (list): A list of payment dictionaries. Each payment dictionary should contain:
+    #     - doctor (str): Doctor's name.
+    #     - total (int): Total amount for the doctor.
+    #     - payments (list, optional): A list of individual payment details. Each detail should contain:
+    #         - payee (str): Payer's name.
+    #         - amount (int): Payment amount.
+    # - total_labor_shares (int): Total labor shares paid.
+    # - labor_shares (list): A list of labor share dictionaries. Each dictionary should contain:
+    #     - doctor (str): Doctor's name.
+    #     - amount (int): Labor share amount.
+    # - totally_left (int): Total amount left.
     date_str = datetime.date.today().strftime('%Y-%m-%d')
     data = {
         "date": date_str,
@@ -45,7 +48,7 @@ def make_daily_report_image(full=False):
     }
 
     # Read payments.csv
-    payments_by_doctor = defaultdict(lambda: {"doctor": "", "total": 0, "payments": []})
+    payments_by_doctor = defaultdict(lambda: {"doctor": "", "total": 0, "items": 0, "payments": []})
     with open(payments_file, "r", newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         for row in reader:
@@ -57,12 +60,30 @@ def make_daily_report_image(full=False):
                     data["total_payments"] += amount
                     payments_by_doctor[doctor]["doctor"] = doctor
                     payments_by_doctor[doctor]["total"] += amount
+                    payments_by_doctor[doctor]["items"] += 1
                     if full:
                         payments_by_doctor[doctor]["payments"].append({"payee": payee, "amount": amount})
             except (ValueError, IndexError) as e:
                 print(f"Error reading payments.csv row: {row}. Error: {e}")
 
     data["payments"] = list(payments_by_doctor.values())
+
+    # Transpose payments for HTML table
+    transposed_payments = []
+    max_payments = max([len(doctor_data["payments"]) for doctor_data in data["payments"]]) if data["payments"] else 0
+
+    for i in range(max_payments):
+        row = []
+        for doctor_data in data["payments"]:
+            try:
+                payment = doctor_data["payments"][i]
+                row.append({"doctor": doctor_data["doctor"], "payee": payment["payee"], "amount": payment["amount"]})
+            except IndexError:
+                row.append({"doctor": doctor_data["doctor"], "payee": "", "amount": ""}) # Add empty cell if no payment
+        transposed_payments.append(row)
+
+    data["transposed_payments"] = transposed_payments
+
 
 
     # Read labor_share.csv
@@ -99,45 +120,35 @@ def make_daily_report_image(full=False):
 
 
     data["totally_left"] = data["total_payments"] - data["total_labor_shares"] - data["total_other_expenses"]  # Subtract expenses
+    return data
 
-    # please read actual data from your source
+def make_daily_report_image(full=False):
+    data = get_daily_report_data(full)
+    make_image("daily_report_template.html", data)
 
-    with open(os.path.join(script_dir, "daily_report_template.html"), "r") as f:  # Use absolute template path
+def make_pdf(template_path, data):
+    with open(os.path.join(script_dir, template_path), "r") as f:  # Use absolute template path
         template = Template(f.read())
     
-
     rendered_html = template.render(**data)
     options = {
-        'width': '576',
+        'page-size': 'A4',
+        'margin-top': '0',
+        'margin-right': '0',
+        'margin-bottom': '0',
+        'margin-left': '0',
         'quiet': '',
     }
+    pdfkit.from_string(rendered_html, output_pdf, options=options)
+    return output_pdf
 
-    imgkit.from_string(rendered_html, output_path, options=options)
-    
-
-# Example usage:
-# report_data = {
-#     "total_payments": 500000,
-#     "payments": [
-#         {"doctor": "Dr. Smith", "total": 250000, "payments": [
-#             {"payee": "John Doe", "amount": 100000},
-#             {"payee": "Jane Doe", "amount": 150000}
-#         ]},
-#         {"doctor": "Dr. Jones", "total": 250000, "payments": [
-#             {"payee": "Peter Pan", "amount": 100000},
-#             {"payee": "Alice Wonderland", "amount": 150000}
-#         ]}
-#     ],
-#     "total_labor_shares": 200000,
-#     "labor_shares": [
-#         {"doctor": "Dr. Smith", "amount": 100000},
-#         {"doctor": "Dr. Jones", "amount": 100000}
-#     ],
-#     "totally_left": 300000  # 500000 - 200000
-# }
+def make_daily_A4_report_document(full=True):
+    data = get_daily_report_data(full)
+    make_pdf("daily_A4_report_template.html", data)
 
 
-from .generate import _print_cheque
 
-make_daily_report_image()
-_print_cheque(output_path, False)  # Print the cheque to the default printer using imgkit
+
+make_daily_A4_report_document()
+#make_daily_report_image()
+#_print_image(output_path, False)  # Print the cheque to the default printer using imgkit

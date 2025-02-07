@@ -9,6 +9,16 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 # Set output path to the script's directory
 output_path = os.path.join(script_dir, "cheque.jpg") # Absolute path to cheque1.jpg
 
+def make_image(template_path, data, options={'width': '576'}):
+    with open(os.path.join(script_dir, template_path), "r") as f:  # Use absolute template path
+        template = Template(f.read())
+    
+    rendered_html = template.render(**data)
+    options['quiet'] = ''
+    imgkit.from_string(rendered_html, output_path, options=options)
+    return output_path
+
+
 
 def make_double_cheque_image(payee, amount, date, doctor):
     with open(os.path.join(script_dir, "2x_cheque_template.html"), "r") as f:  # Use absolute template path

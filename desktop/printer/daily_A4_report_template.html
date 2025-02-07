@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            font-size: 1rem;
+            margin: 0;
+            padding: 8px;
+        }
+        .report {
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
+        th {
+            transform: rotate(90deg);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="report">
+        <div>Sana:{{ date }}</div>
+        <div>Umumiy topshirildi:{{ total_payments }}</div>
+        <table>
+            <thead>
+                <tr>
+                {% for doctor_data in payments %}
+                    <th>{{ doctor_data.doctor }}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in transposed_payments %}
+                <tr>
+                    {% for cell in row %}
+                    <td>{{ cell.amount }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+          
+        <div>Umumiy berildi:{{ total_labor_shares }}</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Doktor</th>
+                    {% for labor_share in labor_shares %}
+                    <th>{{ labor_share.doctor }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Oldi</td>
+                    {% for labor_share in labor_shares %}
+                    <td>{{ labor_share.amount }}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+        <div>Umumiy qoldi:{{ totally_left }}</div>
+    </div>
+</body>
+</html>

@@ -7,7 +7,7 @@ import win32con
 from PIL import Image, ImageWin
 
 
-def _print_cheque(path, portrait = True):
+def _print_image(path, portrait = True):
     img = Image.open(path)
     printer_name = "XP-80C" # win32print.GetDefaultPrinter() # remember to include this in dotenv file
     hDC = win32ui.CreateDC()

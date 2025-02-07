@@ -12,33 +12,58 @@
             padding: 10px;
             position: relative;
         }
+        table {
+            font-size: 2.5rem;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="report">
-        <div>Sana:{{ date }}</div>
-        <div>Umumiy topshirildi:{{ total_payments }}</div>
-        {% for payment in payments %}
-            <hr>
-            <div>Doktor: {{ payment.doctor }}</div>
-            <div>Umumiy:{{ payment.total }}</div>
-            {% if payment.payments %}
-                {% for payment in payment.payments %}
-                    <hr>
-                    <div>Kimdan: {{ payment.payee }}</div>
-                    <div>Miqdor:{{ payment.amount }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
+        <div>Sana: {{ date }}</div>
+        <div>Topshirildi: {{ total_payments }}</div>
+        <table>
+            <tr>
+                <th>Doktor</th>
+                <th>Umumiy</th>
+            </tr>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ payment.doctor }}</td>
+                <td>{{ payment.total }}</td>
+                <!-- {% if payment.payments %}
+                    {% for payment in payment.payments %}
+                        <hr>
+                        <div>Kimdan: {{ payment.payee }}</div>
+                        <div>Miqdor:{{ payment.amount }}</div>
+                    {% endfor %}
+                {% endif %} -->
+
+            </tr>
+            {% endfor %}
+        </table>
         <hr>
-        <div>Umumiy berildi:{{ total_labor_shares }}</div>
-        {% for labor_share in labor_shares %}
+        <div>Berildi: {{ total_labor_shares }}</div>
+        <table>
+            <tr>
+                <th>Doktor</th>
+                <th>Oldi</th>
+            </tr>
+            {% for labor_share in labor_shares %}
+            <tr>
+                <td>{{ labor_share.doctor }}</td>
+                <td>{{ labor_share.amount }}</td>
+            </tr>
+            {% endfor %}
+        </table>
         <hr>
-        <div>Doktor: {{ labor_share.doctor }}</div>
-        <div>Oldi: {{ labor_share.amount }}</div>
-        {% endfor %}
-        <hr>
-        <div>Umumiy qoldi:{{ totally_left }}</div>
+        <div>Qoldi: {{ totally_left }}</div>
     </div>
 </body>
 </html>
