@@ -1,6 +1,9 @@
 import win32com.client
 
-from constants import names, file_path, sheet_name
+from constants import names
+
+file_path = "Dekabr 2024.xlsx"
+sheet_name = "2024 Dekabr (30)"
 
 
 try:

@@ -6,3 +6,4 @@ __pycache__
 payroll.csv
 other_expences.csv
 labor_share.csv
+.env

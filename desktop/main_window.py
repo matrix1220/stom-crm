@@ -6,7 +6,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from qasync import QEventLoop
 
-from constants import names, percentage, files_location  # Import files_location
+from constants import names, percentage, files_location, payments_file, labor_share_file, other_expences_file
+
 
 from printer import print_cheque
 from datetime import datetime
@@ -76,7 +77,7 @@ class MainWindow(QMainWindow):
     
     def load_payment_data(self):
         try:
-            with open(files_location + 'payments.csv', 'r', newline='', encoding='utf-8') as csvfile:
+            with open(payments_file, 'r', newline='', encoding='utf-8') as csvfile:
                 reader = csv.reader(csvfile)
                 
                 # Skip empty lines
@@ -126,7 +127,7 @@ class MainWindow(QMainWindow):
     
     def save_payment_data(self): # New method to save the CSV data
         try:
-            with open(files_location + 'payments.csv', 'w', newline='', encoding='utf-8') as csvfile:
+            with open(payments_file, 'w', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile)
                 model = self.table_view.model()
                 for row in range(model.rowCount()):

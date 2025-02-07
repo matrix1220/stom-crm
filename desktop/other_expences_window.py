@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWid
 from PyQt5.QtWidgets import QMainWindow, QDialog
 from PyQt5.QtCore import Qt
 
-from constants import names, percentage, files_location
+from constants import names, percentage, files_location, other_expences_file
+
 
 from printer import print_cheque
 from datetime import datetime
@@ -53,8 +54,8 @@ class OtherExpensesWindow(QDialog):  # New class for the new payment window
         total_expenses = 0
 
         try:
-            if os.path.isfile(files_location + "other_expences.csv"):  # Ensure correct CSV file name
-                with open(files_location + 'other_expences.csv', 'r', newline='', encoding='utf-8') as csvfile:
+            if os.path.isfile(other_expences_file):  # Ensure correct CSV file name
+                with open(other_expences_file, 'r', newline='', encoding='utf-8') as csvfile:
                     reader = csv.reader(csvfile)
                     next(reader) # skip the header if it exists
                     for row in reader:
@@ -86,7 +87,7 @@ class OtherExpensesWindow(QDialog):  # New class for the new payment window
         amount = self.input3.text()
 
         try:
-            with open(files_location + 'other_expences.csv', 'a', newline='', encoding='utf-8') as csvfile:  # Use a different CSV file or same
+            with open(other_expences_file, 'a', newline='', encoding='utf-8') as csvfile:  # Use a different CSV file or same
                 writer = csv.writer(csvfile)
                 now = datetime.now()
                 date_time_string = now.strftime("%Y-%m-%d %H:%M:%S")

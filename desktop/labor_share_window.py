@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWid
 from PyQt5.QtWidgets import QMainWindow, QDialog
 from PyQt5.QtCore import Qt
 
-from constants import names, percentage, files_location
+from constants import names, percentage, files_location, payments_file, labor_share_file, other_expences_file
 
 from printer import print_cheque
 from datetime import datetime
@@ -59,8 +59,8 @@ class LaborShareWindow(QDialog):
         today = datetime.now().strftime("%Y-%m-%d")
         totals = {}
 
-        if os.path.isfile(files_location + "labor_share.csv"):
-            with open(files_location +'labor_share.csv', 'r', newline='', encoding='utf-8') as csvfile:
+        if os.path.isfile(labor_share_file):
+            with open(labor_share_file, 'r', newline='', encoding='utf-8') as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
                     date_string, labor_share_employee, amount_str = row
@@ -74,8 +74,8 @@ class LaborShareWindow(QDialog):
                         except ValueError:
                             print(f"Invalid labor_share amount: {amount_str}") # Handle non-numeric data
         
-        if os.path.isfile(files_location + "payments.csv"):
-            with open(files_location +'payments.csv', 'r', newline='', encoding='utf-8') as csvfile: # Open payments.csv
+        if os.path.isfile(payments_file):
+            with open(payments_file, 'r', newline='', encoding='utf-8') as csvfile: # Open payments.csv
                 reader = csv.reader(csvfile)
                 for row in reader:
                     date_string, payment_employee, patient, amount_str = row
@@ -105,8 +105,8 @@ class LaborShareWindow(QDialog):
         total_payments = 0 # Initialize total payments
 
         try:
-            if os.path.isfile(files_location + "labor_share.csv"):
-                with open(files_location + 'labor_share.csv', 'r', newline='', encoding='utf-8') as csvfile:
+            if os.path.isfile(labor_share_file):
+                with open(labor_share_file, 'r', newline='', encoding='utf-8') as csvfile:
                     reader = csv.reader(csvfile)
                     for row in reader:
                         date_string, labor_share_employee, amount_str = row
@@ -119,8 +119,8 @@ class LaborShareWindow(QDialog):
                             except ValueError:
                                 print(f"Invalid labor_share amount: {amount_str}") # Handle non-numeric data
 
-            if os.path.isfile(files_location + "payments.csv"):
-                with open(files_location + 'payments.csv', 'r', newline='', encoding='utf-8') as csvfile: # Open payments.csv
+            if os.path.isfile(payments_file):
+                with open(payments_file, 'r', newline='', encoding='utf-8') as csvfile: # Open payments.csv
                     reader = csv.reader(csvfile)
                     for row in reader:
                         date_string, payment_employee, patient, amount_str = row
@@ -168,7 +168,7 @@ class LaborShareWindow(QDialog):
         date_today = datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Include date and time
 
         try:
-            with open(files_location +'labor_share.csv', 'a', newline='', encoding='utf-8') as csvfile:  # Separate CSV for labor_share
+            with open(labor_share_file, 'a', newline='', encoding='utf-8') as csvfile:  # Separate CSV for labor_share
                 writer = csv.writer(csvfile)
                 writer.writerow([date_today, employee, amount]) # Write to labor_share CSV
         except Exception as e:

@@ -12,6 +12,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Set output path to the script's directory
 output_path = os.path.join(script_dir, "cheque.jpg") # Absolute path to cheque1.jpg
+from constants import payments_file, labor_share_file, other_expences_file
 
 def make_daily_report_image(full=False):
     """
@@ -31,7 +32,6 @@ def make_daily_report_image(full=False):
             - totally_left (int): Total amount left.
 
     """
-    files_location = "files/"  # Replace with your files directory path
     date_str = datetime.date.today().strftime('%Y-%m-%d')
     data = {
         "date": date_str,
@@ -46,7 +46,7 @@ def make_daily_report_image(full=False):
 
     # Read payments.csv
     payments_by_doctor = defaultdict(lambda: {"doctor": "", "total": 0, "payments": []})
-    with open(os.path.join(files_location, "payments.csv"), "r", newline="", encoding="utf-8") as f:
+    with open(payments_file, "r", newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         for row in reader:
             date_time_str, doctor, payee, amount_str = row
@@ -66,7 +66,7 @@ def make_daily_report_image(full=False):
 
 
     # Read labor_share.csv
-    with open(os.path.join(files_location, "labor_share.csv"), "r", newline="", encoding="utf-8") as f:
+    with open(labor_share_file, "r", newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         for row in reader:
             date_time_str, doctor, amount_str = row
@@ -80,7 +80,7 @@ def make_daily_report_image(full=False):
                 print(f"Error reading labor_share.csv row: {row}. Error: {e}")
 
     # Read other_expences.csv  (New)
-    with open(os.path.join(files_location, "other_expences.csv"), "r", newline="", encoding="utf-8") as f:
+    with open(other_expences_file, "r", newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         next(reader, None)  # Skip header row (if exists)
 

@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWid
 from PyQt5.QtWidgets import QMainWindow, QDialog, QCheckBox
 from PyQt5.QtCore import Qt
 
-from constants import names, percentage, files_location
+from constants import names, percentage, files_location, payments_file, labor_share_file, other_expences_file
+
 
 #from excel.com import save_new_record
 #save_new_record = None
@@ -64,7 +65,7 @@ class PaymentWindow(QDialog):
             print_cheque(patient_name, amount, date_today, doctor)
 
         try:
-            with open(files_location + 'payments.csv', 'a', newline='', encoding='utf-8') as csvfile:  # 'a' mode appends
+            with open(payments_file, 'a', newline='', encoding='utf-8') as csvfile:  # 'a' mode appends
                 writer = csv.writer(csvfile)
                 now = datetime.now()
                 date_time_string = now.strftime("%Y-%m-%d %H:%M:%S")
