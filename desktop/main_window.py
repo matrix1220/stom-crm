@@ -92,8 +92,15 @@ class MainWindow(QMainWindow):
         os.startfile(path)
     
     def print_daily_report(self):
-        path = make_daily_report_image()
-        _print_image(path, False)
+        reply = QMessageBox.question(
+            self, 'Print Daily Report',
+            f"Do you really want to print the daily report?<br><br>", # Display info about the record
+            QMessageBox.Yes | QMessageBox.No, QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+            path = make_daily_report_image()
+            _print_image(path, False)
     
     def load_payment_data(self):
         try:

@@ -38,6 +38,7 @@ def get_daily_report_data(full=False):
     date_str = datetime.date.today().strftime('%Y-%m-%d')
     data = {
         "date": date_str,
+        "time": datetime.datetime.now().strftime("%H:%M:%S"),
         "total_payments": 0,
         "payments": [],
         "total_labor_shares": 0,
