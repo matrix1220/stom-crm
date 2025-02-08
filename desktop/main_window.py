@@ -18,6 +18,9 @@ from labor_share_window import LaborShareWindow
 from other_expences_window import OtherExpensesWindow
 from payment_window import PaymentWindow
 
+from printer.generate_daily_report import make_daily_A4_report_document, make_daily_report_image
+from printer.print_image import _print_image
+
 class ButtonDelegate(QStyledItemDelegate):
     def __init__(self, table, click_handler):
         super().__init__(table)
@@ -73,7 +76,24 @@ class MainWindow(QMainWindow):
         layout.addWidget(open_other_expenses_button)  # Add to layout
         self.other_expenses_window = None
 
+        generate_report_button = QPushButton("Generate daily report")
+        layout.addWidget(generate_report_button)
+        generate_report_button.clicked.connect(self.generate_daily_report)  # Connect
+
+        print_daily_report_button = QPushButton("Print daily report")
+        layout.addWidget(print_daily_report_button)
+        print_daily_report_button.clicked.connect(self.print_daily_report)  # Connect
+
         self.load_payment_data()
+    
+    def generate_daily_report(self):
+        path = make_daily_A4_report_document(True)
+        # open the generated report in the default PDF viewer
+        os.startfile(path)
+    
+    def print_daily_report(self):
+        path = make_daily_report_image()
+        _print_image(path, False)
     
     def load_payment_data(self):
         try:

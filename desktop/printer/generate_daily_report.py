@@ -124,7 +124,7 @@ def get_daily_report_data(full=False):
 
 def make_daily_report_image(full=False):
     data = get_daily_report_data(full)
-    make_image("daily_report_template.html", data)
+    return make_image("daily_report_template.html", data)
 
 def make_pdf(template_path, data):
     with open(os.path.join(script_dir, template_path), "r") as f:  # Use absolute template path
@@ -144,11 +144,11 @@ def make_pdf(template_path, data):
 
 def make_daily_A4_report_document(full=True):
     data = get_daily_report_data(full)
-    make_pdf("daily_A4_report_template.html", data)
+    return make_pdf("daily_A4_report_template.html", data)
 
 
 
 
-make_daily_A4_report_document()
-make_daily_report_image()
+# make_daily_A4_report_document()
+# make_daily_report_image()
 #_print_image(output_path, False)  # Print the cheque to the default printer using imgkit
