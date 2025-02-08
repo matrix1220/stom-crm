@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 # Load environment variables from .env file
 load_dotenv()
@@ -14,7 +15,11 @@ percentage = {
 names = percentage.keys()
 
 files_location = os.getenv("FILES_LOCATION")
+date = datetime.now().strftime("%Y-%m-%d")
+files_location = os.path.join(files_location, date)
+os.makedirs(files_location, exist_ok=True)
 
 payments_file = os.path.join(files_location, "payments.csv")
 labor_share_file = os.path.join(files_location, "labor_share.csv")
 other_expences_file = os.path.join(files_location, "other_expences.csv")
+bank_file = os.path.join(files_location, "bank.csv")
