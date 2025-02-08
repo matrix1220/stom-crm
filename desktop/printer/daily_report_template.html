@@ -48,7 +48,6 @@
             </tr>
             {% endfor %}
         </table>
-        <hr>
         <div>Berildi: {{ total_labor_shares }}</div>
         <table>
             <tr>
@@ -61,6 +60,21 @@
                 <td>{{ labor_share.amount }}</td>
             </tr>
             {% endfor %}
+        </table>
+        <div>Umumiy ketdi: {{ total_other_expenses }}</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Boshqa</th>
+                    <th>ketdi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for other_expense in other_expenses %}
+                <td>{{ other_expense.description }}</td>
+                <td>{{ other_expense.amount }}</td>
+                {% endfor %}
+            </tbody>
         </table>
         <hr>
         <div>Qoldi: {{ totally_left }}</div>

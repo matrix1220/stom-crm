@@ -30,8 +30,8 @@
 </head>
 <body>
     <div class="report">
-        <div>Sana:{{ date }}</div>
-        <div>Umumiy topshirildi:{{ total_payments }}</div>
+        <div>Sana: {{ date }}</div>
+        <div>Umumiy topshirildi: {{ total_payments }}</div>
         <table>
             <thead>
                 <tr>
@@ -51,7 +51,7 @@
             </tbody>
         </table>
           
-        <div>Umumiy berildi:{{ total_labor_shares }}</div>
+        <div>Umumiy berildi: {{ total_labor_shares }}</div>
         <table>
             <thead>
                 <tr>
@@ -70,7 +70,22 @@
                 </tr>
             </tbody>
         </table>
-        <div>Umumiy qoldi:{{ totally_left }}</div>
+        <div>Umumiy ketdi: {{ total_other_expenses }}</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Boshqa</th>
+                    <th>ketdi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for other_expense in other_expenses %}
+                <td>{{ other_expense.description }}</td>
+                <td>{{ other_expense.amount }}</td>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>Umumiy qoldi: {{ totally_left }}</div>
     </div>
 </body>
 </html>

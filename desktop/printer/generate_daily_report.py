@@ -150,5 +150,5 @@ def make_daily_A4_report_document(full=True):
 
 
 make_daily_A4_report_document()
-#make_daily_report_image()
+make_daily_report_image()
 #_print_image(output_path, False)  # Print the cheque to the default printer using imgkit
