@@ -80,8 +80,10 @@
             </thead>
             <tbody>
                 {% for other_expense in other_expenses %}
-                <td>{{ other_expense.description }}</td>
-                <td>{{ other_expense.amount }}</td>
+                <tr>
+                    <td>{{ other_expense.description }}</td>
+                    <td>{{ other_expense.amount }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
