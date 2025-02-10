@@ -50,22 +50,23 @@ def get_daily_report_data(full=False):
 
     # Read payments.csv
     payments_by_doctor = defaultdict(lambda: {"doctor": "", "total": 0, "items": 0, "payments": []})
-    with open(payments_file, "r", newline="", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            date_time_str, doctor, payee, amount_str = row
-            try:
-                date_obj = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S").date()
-                if date_obj.strftime("%Y-%m-%d") == date_str:
-                    amount = float(amount_str)
-                    data["total_payments"] += amount
-                    payments_by_doctor[doctor]["doctor"] = doctor
-                    payments_by_doctor[doctor]["total"] += amount
-                    payments_by_doctor[doctor]["items"] += 1
-                    if full:
-                        payments_by_doctor[doctor]["payments"].append({"payee": payee, "amount": amount})
-            except (ValueError, IndexError) as e:
-                print(f"Error reading payments.csv row: {row}. Error: {e}")
+    if os.path.isfile(payments_file):
+        with open(payments_file, "r", newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                date_time_str, doctor, payee, amount_str = row
+                try:
+                    date_obj = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S").date()
+                    if date_obj.strftime("%Y-%m-%d") == date_str:
+                        amount = float(amount_str)
+                        data["total_payments"] += amount
+                        payments_by_doctor[doctor]["doctor"] = doctor
+                        payments_by_doctor[doctor]["total"] += amount
+                        payments_by_doctor[doctor]["items"] += 1
+                        if full:
+                            payments_by_doctor[doctor]["payments"].append({"payee": payee, "amount": amount})
+                except (ValueError, IndexError) as e:
+                    print(f"Error reading payments.csv row: {row}. Error: {e}")
 
     data["payments"] = list(payments_by_doctor.values())
 
@@ -88,35 +89,37 @@ def get_daily_report_data(full=False):
 
 
     # Read labor_share.csv
-    with open(labor_share_file, "r", newline="", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            date_time_str, doctor, amount_str = row
-            try:
-                date_obj = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S").date()
-                if date_obj.strftime("%Y-%m-%d") == date_str:
-                    amount = float(amount_str)
-                    data["total_labor_shares"] += amount
-                    data["labor_shares"].append({"doctor": doctor, "amount": amount})
-            except (ValueError, IndexError) as e:
-                print(f"Error reading labor_share.csv row: {row}. Error: {e}")
+    if os.path.isfile(labor_share_file):
+        with open(labor_share_file, "r", newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                date_time_str, doctor, amount_str = row
+                try:
+                    date_obj = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S").date()
+                    if date_obj.strftime("%Y-%m-%d") == date_str:
+                        amount = float(amount_str)
+                        data["total_labor_shares"] += amount
+                        data["labor_shares"].append({"doctor": doctor, "amount": amount})
+                except (ValueError, IndexError) as e:
+                    print(f"Error reading labor_share.csv row: {row}. Error: {e}")
 
     # Read other_expences.csv  (New)
-    with open(other_expences_file, "r", newline="", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        next(reader, None)  # Skip header row (if exists)
+    if os.path.isfile(other_expences_file):
+        with open(other_expences_file, "r", newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)  # Skip header row (if exists)
 
-        for row in reader:  # Corrected loop variable
-            date_time_str, description, amount_str = row
-            try:
-                date_obj = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S").date()
-                if date_obj.strftime("%Y-%m-%d") == date_str:
+            for row in reader:  # Corrected loop variable
+                date_time_str, description, amount_str = row
+                try:
+                    date_obj = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S").date()
+                    if date_obj.strftime("%Y-%m-%d") == date_str:
 
-                    amount = float(amount_str)
-                    data["total_other_expenses"] += amount
-                    data["other_expenses"].append({"description": description, "amount": amount})  # Corrected field name
-            except (ValueError, IndexError) as e:
-                print(f"Error reading other_expenses.csv row: {row}. Error: {e}")  # Corrected file name
+                        amount = float(amount_str)
+                        data["total_other_expenses"] += amount
+                        data["other_expenses"].append({"description": description, "amount": amount})  # Corrected field name
+                except (ValueError, IndexError) as e:
+                    print(f"Error reading other_expenses.csv row: {row}. Error: {e}")  # Corrected file name
 
 
 
