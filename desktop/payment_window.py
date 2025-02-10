@@ -56,13 +56,15 @@ class PaymentWindow(QDialog):
         patient_name = self.input2.text()
         amount = self.input3.text()
         date_today = datetime.now().strftime("%Y-%m-%d")  # Get today's date
+        time = datetime.now().strftime("%H:%M:%S")
+        data = {"payee": patient_name, "amount": amount, "date": date_today, "doctor": doctor, "time": time}
 
         print(f"To'lov amalga oshmoqda: {doctor}, {patient_name}, {amount}")
         print_cheque_text = self.print_combo.currentText()
         if print_cheque_text == "Print Double Cheque":
-            print_double_cheque(patient_name, amount, date_today, doctor)
+            print_double_cheque(data)
         elif print_cheque_text == "Print Cheque":
-            print_cheque(patient_name, amount, date_today, doctor)
+            print_cheque(data)
 
         try:
             with open(payments_file, 'a', newline='', encoding='utf-8') as csvfile:  # 'a' mode appends
