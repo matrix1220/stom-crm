@@ -8,3 +8,5 @@ payroll.csv
 other_expences.csv
 labor_share.csv
 .env
+app.exe
+app.dist

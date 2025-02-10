@@ -7,4 +7,5 @@ ninja2
 pillow
 html2image
 imgkit
+pdfkit
 python-dotenv
