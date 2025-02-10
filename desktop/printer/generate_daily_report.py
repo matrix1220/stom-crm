@@ -107,7 +107,6 @@ def get_daily_report_data(full=False):
     if os.path.isfile(other_expences_file):
         with open(other_expences_file, "r", newline="", encoding="utf-8") as f:
             reader = csv.reader(f)
-            next(reader, None)  # Skip header row (if exists)
 
             for row in reader:  # Corrected loop variable
                 date_time_str, description, amount_str = row
