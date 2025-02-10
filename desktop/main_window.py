@@ -71,12 +71,12 @@ class MainWindow(QMainWindow):
         layout.addWidget(open_labor_share_button)
         self.labor_share_window = None
 
-        open_other_expenses_button = QPushButton("Open other expenses")  # New button
+        open_other_expenses_button = QPushButton("Chiqim")  # New button
         open_other_expenses_button.clicked.connect(self.open_other_expenses_window)  # Connect
         layout.addWidget(open_other_expenses_button)  # Add to layout
         self.other_expenses_window = None
 
-        generate_report_button = QPushButton("Generate daily report")
+        generate_report_button = QPushButton("Kunlik sarhisob")
         layout.addWidget(generate_report_button)
         generate_report_button.clicked.connect(self.generate_daily_report)  # Connect
 
