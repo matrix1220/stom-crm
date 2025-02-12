@@ -193,16 +193,6 @@ class LaborShareWindow(QDialog):
             path = make_doctor_cheque_image(data)
             _print_image(path, False)
 
-        if self.checkbox.isChecked():  # If the checkbox is checked, print a cheque
-            data = {
-                "doctor": employee,
-                "date": datetime.now().strftime("%Y-%m-%d"),
-                "total": int(amount)*1000,
-                "time": datetime.now().strftime("%H:%M:%S")
-            }
-            path = make_doctor_cheque_image(data)
-            #_print_image(path, False)
-
         self.update_diff_string()
 
         self.update_labor_share_records()
