@@ -29,11 +29,7 @@ def make_double_cheque_image(data):
 def make_cheque_image(data):
     return make_image("cheque_template.html", data,)
 
-def make_doctor_cheque_image(doctor, date, payments, labor_shares, total):
-    return make_image(
-        "doctor_cheque_template.html",
-        {"doctor": doctor, "date": date, "payments": payments, "labor_shares": labor_shares, "total": total},
-
-    )
+def make_doctor_cheque_image(data):
+    return make_image("doctor_cheque_template.html", data)
 
 

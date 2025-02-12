@@ -1,6 +1,6 @@
 
 from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWidget, QLineEdit, QComboBox
-from PyQt5.QtWidgets import QMainWindow, QDialog
+from PyQt5.QtWidgets import QMainWindow, QDialog, QCheckBox
 from PyQt5.QtCore import Qt
 
 from constants import names, percentage, files_location, payments_file, labor_share_file, other_expences_file
@@ -9,6 +9,9 @@ from printer import print_cheque
 from datetime import datetime
 import csv
 import os.path
+
+from printer.print_image import _print_image
+from printer.make_image import make_doctor_cheque_image
 
 
 class LaborShareWindow(QDialog):
@@ -44,6 +47,9 @@ class LaborShareWindow(QDialog):
 
         self.labor_share_records_label = QLabel("") # Label to display records
         self.layout.addWidget(self.labor_share_records_label)
+
+        self.checkbox = QCheckBox("Print cheque")  # Checkbox to include in cheque
+        self.layout.addWidget(self.checkbox)
 
         self.button = QPushButton("Process Labor Share")  # Button text
         self.layout.addWidget(self.button)
@@ -176,6 +182,16 @@ class LaborShareWindow(QDialog):
             # Consider showing an error message to the user
 
         print(f"Labor Share processed for: {employee}, Amount: {amount}")
+
+        if self.checkbox.isChecked():  # If the checkbox is checked, print a cheque
+            data = {
+                "doctor": employee,
+                "date": datetime.now().strftime("%Y-%m-%d"),
+                "total": int(amount)*1000,
+                "time": datetime.now().strftime("%H:%M:%S")
+            }
+            path = make_doctor_cheque_image(data)
+            #_print_image(path, False)
 
         self.update_diff_string()
 
