@@ -18,16 +18,8 @@
     <div class="cheque">
         <div>Doktor: {{ doctor }}</div>
         <div>Sana: {{ date }}</div>
-        {% for payment in payments %}
-        <hr>
-        <div>Kimdan: {{ payment.payee }}</div>
-        <div>Miqdor:{{ payment.amount }}</div>
-        {% endfor %}
-        {% for labor_share in labor_shares %}
-        <hr>
-        <div>Oldi: {{ labor_share.amount }}</div>
-        <div>Vaqt: {{ labor_share.time }}</div>
-        {% endfor %}
+        <div>Vaqt: {{ time }}</div>
+        <div>Miqdor: {{ total }}</div>
 
     </div>
 </body>
