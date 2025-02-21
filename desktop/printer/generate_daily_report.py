@@ -128,7 +128,7 @@ def get_daily_report_data(full=False):
             reader = csv.reader(csvfile)
             for row in reader:
                 date_string, labor_share_employee, amount_str = row
-                date_obj = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").date()
+                date_obj = datetime.datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").date()
                 if date_obj.strftime("%Y-%m-%d") == date_str:
                     try:
                         amount = float(amount_str)
@@ -143,7 +143,7 @@ def get_daily_report_data(full=False):
             reader = csv.reader(csvfile)
             for row in reader:
                 date_string, payment_employee, patient, amount_str = row
-                date_obj = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").date()
+                date_obj = datetime.datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").date()
                 if date_obj.strftime("%Y-%m-%d") == date_str:
                     try:
                         amount = float(amount_str)
