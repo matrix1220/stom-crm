@@ -18,7 +18,7 @@ output_path = os.path.join(script_dir, "cheque.jpg")
 
 output_pdf = os.path.join(script_dir, "report.pdf") # Absolute path to cheque1.jpg
 
-from constants import payments_file, labor_share_file, other_expences_file
+from constants import payments_file, labor_share_file, other_expences_file, percentage
 
 def get_daily_report_data(full=False):
     # data (dict): A dictionary containing the report data.
@@ -121,8 +121,50 @@ def get_daily_report_data(full=False):
                     print(f"Error reading other_expenses.csv row: {row}. Error: {e}")  # Corrected file name
 
 
+    totals = {}
+
+    if os.path.isfile(labor_share_file):
+        with open(labor_share_file, 'r', newline='', encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                date_string, labor_share_employee, amount_str = row
+                date_obj = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").date()
+                if date_obj.strftime("%Y-%m-%d") == date_str:
+                    try:
+                        amount = float(amount_str)
+                        if labor_share_employee not in totals:
+                            totals[labor_share_employee] = 0
+                        totals[labor_share_employee] -= amount
+                    except ValueError:
+                        print(f"Invalid labor_share amount: {amount_str}") # Handle non-numeric data
+    
+    if os.path.isfile(payments_file):
+        with open(payments_file, 'r', newline='', encoding='utf-8') as csvfile: # Open payments.csv
+            reader = csv.reader(csvfile)
+            for row in reader:
+                date_string, payment_employee, patient, amount_str = row
+                date_obj = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").date()
+                if date_obj.strftime("%Y-%m-%d") == date_str:
+                    try:
+                        amount = float(amount_str)
+                        if payment_employee not in totals:
+                            totals[payment_employee] = 0
+                        
+                        totals[payment_employee] += amount*percentage[payment_employee]
+                    except ValueError:
+                        print(f"Invalid payment amount: {amount_str}")
+    
+    data['should_taken'] = []
+    data['total_should_taken'] = 0
+    for employee, total in totals.items():
+        if total != 0:
+            data['should_taken'].append({"employee": employee, "total": total})
+            data['total_should_taken'] += total
+    
+    
 
     data["totally_left"] = data["total_payments"] - data["total_labor_shares"] - data["total_other_expenses"]  # Subtract expenses
+    data["total_should_left"] = data['totally_left'] - data["total_should_taken"]
     return data
 
 def make_daily_report_image(full=False):

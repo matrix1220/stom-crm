@@ -50,6 +50,25 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div>Umumiy olishi kerak: {{ total_should_taken }}</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Doktor</th>
+                    {% for should_taken_ in should_taken %}
+                    <th>{{ should_taken_.employee }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Oladi</td>
+                    {% for should_taken_ in should_taken %}
+                    <th>{{ should_taken_.total }}</th>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
           
         <div>Umumiy berildi: {{ total_labor_shares }}</div>
         <table>
@@ -87,7 +106,8 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div>Umumiy qoldi: {{ totally_left }}</div>
+        <div>Hozir bor: {{ totally_left }}</div>
+        <div>Qolishi kerak: {{ total_should_left }}</div>
     </div>
 </body>
 </html>
